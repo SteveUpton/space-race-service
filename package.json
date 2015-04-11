@@ -4,7 +4,8 @@
   "description": "Provides interesting insights on ",
   "author": "Steve Upton",
   "dependencies": {
-    "express": "4.2.x"
+    "express": "4.2.x",
+    "body-parser": "~1.0.1"
   },
   "license": "MIT"
 }
