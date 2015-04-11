@@ -1,4 +1,3 @@
-var util = require('util');
 
 module.exports.secondsToStr = function(seconds) {
 
