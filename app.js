@@ -1,6 +1,7 @@
-var express    = require('express');
-var app        = express();
+var express = require('express');
+var app = express();
 var bodyParser = require('body-parser');
+var util = require('./util.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -29,28 +30,7 @@ app.use('/' + prefix, router);
 app.listen(port);
 console.log('Running on port ' + port);
 
-var distanceFacts = [
-  { thing: "Curiosity",
-    distance: 8600,
-    time: 951*86400,
-    url: "http://mars.nasa.gov/msl/mission/mars-rover-curiosity-mission-updates/" },
-  { thing: "Opportunity",
-    distance: 42000,
-    time: 3984*86400,
-    url: "www.example.com" },
-  { thing: "Lunokhod 1",
-    distance: 10540,
-    time: 322*86400,
-    url: "www.example.com" },
-  { thing: "Lunokhod 2",
-    distance: 39000,
-    time: 120*86400,
-    url: "www.example.com" },
-  { thing: "the International Space Station",
-    distance: 27600000*24,
-    time: 86400,
-    url: "www.example.com" }
-];
+var distanceFacts = require('./distance-data.json');
 
 function generateDistanceFact(distance, time) {
   closestMatch = Infinity;
@@ -71,44 +51,15 @@ function generateDistanceFact(distance, time) {
 
 function constructSentence(distance, time, match, close) {
 
-  sentence = "You travelled " + distance + " metres in " + secondsToStr(time) + ". "
+  sentence = "You travelled " + distance + " metres in " + util.secondsToStr(time) + ". "
   if (close) {
-    sentence += "That's almost as far as " + match.thing + " travelled in " + secondsToStr(match.time) + "."
+    sentence += "That's almost as far as " + match.thing + " travelled in " + util.secondsToStr(match.time) + "."
   } else {
     factor = match.distance/distance;
     equivalentTime = match.time/factor;
-    sentence += "It would take " + match.thing + " " + secondsToStr(equivalentTime) + " to travel the same distance!"
+    sentence += "It would take " + match.thing + " " + util.secondsToStr(equivalentTime) + " to travel the same distance!"
   }
   return sentence;
 }
 
-console.log(generateDistanceFact(1000, 60000));
-
-function secondsToStr(seconds) {
-
-    function numberEnding (number) {
-        return (number > 1) ? 's' : '';
-    }
-
-    var years = Math.floor(seconds / 31536000);
-    if (years) {
-        return years + ' year' + numberEnding(years);
-    }
-    var days = Math.floor((seconds %= 31536000) / 86400);
-    if (days) {
-        return days + ' day' + numberEnding(days);
-    }
-    var hours = Math.floor((seconds %= 86400) / 3600);
-    if (hours) {
-        return hours + ' hour' + numberEnding(hours);
-    }
-    var minutes = Math.floor((seconds %= 3600) / 60);
-    if (minutes) {
-        return minutes + ' minute' + numberEnding(minutes);
-    }
-    var seconds = seconds % 60;
-    if (seconds) {
-        return seconds + ' second' + numberEnding(seconds);
-    }
-    return 'less than a second'; //'just now' //or other string you like;
-}
+console.log(generateDistanceFact(1000, 60*60));

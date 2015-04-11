@@ -1,7 +1,7 @@
 ---
 applications:
-- name:  sac15.service
+- name:  spacerace.service
   disk: 512M
   command: node app.js
   memory: 128M
-  host: space-runner
+  host: space-race
