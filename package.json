@@ -1,0 +1,10 @@
+{
+  "name": "sac15-service",
+  "version": "0.0.1",
+  "description": "Provides interesting insights on ",
+  "author": "Steve Upton",
+  "dependencies": {
+    "express": "4.2.x"
+  },
+  "license": "MIT"
+}
