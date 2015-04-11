@@ -17,12 +17,13 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', function(req, res) {
-
+  
 });
 
 router.route('/run').get(function(req, res) {
   console.log(req.query);
-  res.json({ message: generateDistanceFact(req.query.distance, req.query.time) });
+  res.json({ message: generateDistanceFact(req.query.distance,
+                                           req.query.time) });
 });
 
 app.use('/' + prefix, router);
@@ -51,15 +52,27 @@ function generateDistanceFact(distance, time) {
 
 function constructSentence(distance, time, match, close) {
 
-  sentence = "You travelled " + distance + " metres in " + util.secondsToStr(time) + ". "
+  sentence = "You travelled " + distance + " metres in "
+             + util.secondsToStr(time) + ". "
   if (close) {
-    sentence += "That's almost as far as " + match.thing + " travelled in " + util.secondsToStr(match.time) + "."
+    sentence += "That's almost as far as " + match.snippet + " travelled in "
+                + util.secondsToStr(match.time) + "."
   } else {
     factor = match.distance/distance;
     equivalentTime = match.time/factor;
-    sentence += "It would take " + match.thing + " " + util.secondsToStr(equivalentTime) + " to travel the same distance!"
+    sentence += "It would" + getTense(match.current) + match.snippet + " "
+                + util.secondsToStr(equivalentTime)
+                + " to travel the same distance!";
   }
   return sentence;
+
+  function getTense(current) {
+    if (current) {
+      return " take ";
+    } else {
+      return " have taken ";
+    }
+  }
 }
 
 console.log(generateDistanceFact(1000, 60*60));
