@@ -29,7 +29,12 @@ router.route('/run').get(function(req, res) {
     message = constructSentence(req.query.distance, req.query.time, match, false);
   }
 
-  res.json({ "message": message });
+  points = getPoints(req.query.distance, req.query.time);
+  info = getMoreInfo(match);
+
+  res.json({ "message": message,
+             "points": points,
+             "info": info });
 });
 
 app.use('/' + prefix, router);
@@ -77,4 +82,12 @@ function constructSentence(distance, time, match, close) {
       return " have taken ";
     }
   }
+}
+
+function getPoints(distance, time) {
+  return Math.floor((distance/time) * distance^2 * 0.1);
+}
+
+function getMoreInfo(match) {
+  return "Click <a href=\"" + match.url + "\">here</a> for more info on " + match.name;
 }
