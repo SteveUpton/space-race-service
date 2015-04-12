@@ -22,8 +22,14 @@ router.get('/', function(req, res) {
 
 router.route('/run').get(function(req, res) {
   console.log(req.query);
-  res.json({ message: generateDistanceFact(req.query.distance,
-                                           req.query.time) });
+  match = generateMatch(req.query.distance, req.query.time);
+  if (Math.abs(req.query.distance - match.distance) < (match.distance*0.1)) {
+    message = constructSentence(req.query.distance, req.query.time, match, true);
+  } else {
+    message = constructSentence(req.query.distance, req.query.time, match, false);
+  }
+
+  res.json({ "message": message });
 });
 
 app.use('/' + prefix, router);
@@ -33,21 +39,19 @@ console.log('Running on port ' + port);
 
 var distanceFacts = require('./distance-data.json');
 
-function generateDistanceFact(distance, time) {
+function generateMatch(distance, time) {
   closestMatch = Infinity;
   match = null;
-  close = false;
   distanceFacts.forEach(function(currentValue, index, array) {
     diff = Math.abs(distance - currentValue.distance);
     if (diff < (currentValue.distance*0.1)) {
-      close = true;
       match = currentValue;
     }
   });
   if (!match) {
     match = distanceFacts[Math.floor(Math.random()*distanceFacts.length)];
   }
-  return constructSentence(distance, time, match, close);
+  return match;
 }
 
 function constructSentence(distance, time, match, close) {
@@ -74,5 +78,3 @@ function constructSentence(distance, time, match, close) {
     }
   }
 }
-
-console.log(generateDistanceFact(1000, 60*60));

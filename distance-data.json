@@ -1,6 +1,6 @@
 [
-  { "name": "Apollo Lunar Rover",
-    "snippet": "Apollo 17 Lunar Rover",
+  { "name": "the Apollo Lunar Rover",
+    "snippet": "the Apollo 17 Lunar Rover",
     "distance": 35890,
     "time": 15480,
     "current": false,
@@ -53,7 +53,7 @@
     "time": 60,
     "current": true,
     "url": "www.example.com" },
-  { "name": "The International Space Station",
+  { "name": "the International Space Station",
     "snippet": "the International Space Station",
     "distance": 662400000,
     "time": 86400,
