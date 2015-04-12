@@ -17,10 +17,13 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', function(req, res) {
-  
+
 });
 
 router.route('/run').get(function(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  
   console.log(req.query);
   match = generateMatch(req.query.distance, req.query.time);
   if (Math.abs(req.query.distance - match.distance) < (match.distance*0.1)) {
@@ -89,5 +92,6 @@ function getPoints(distance, time) {
 }
 
 function getMoreInfo(match) {
-  return "Click <a href=\"" + match.url + "\">here</a> for more info on " + match.name;
+  return "Click <a href=\"" + match.url + "\">here</a> for more info on "
+         + match.name;
 }
